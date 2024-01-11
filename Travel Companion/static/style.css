@@ -66,9 +66,14 @@
 .nav-items a{
     text-decoration: none;
     color: black;
+    
 }
-
-
+.nav-components{
+    opacity:0.75;
+}
+.nav-components:hover{
+    opacity:1;
+}
 
 /* Hero Section   */
 

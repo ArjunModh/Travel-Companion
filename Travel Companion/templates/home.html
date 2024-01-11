@@ -20,9 +20,10 @@
                     <div class="logo-text">ravel Companion</div>
                 </div>
                 <div class="nav-items">
-                    <div background-color:"red"><a href="#projects">Explore Site</a></div>
-                    <div><a href="./member.html">Members</a></div>
-                    <div><a href="#contactme">Message Us</a></div>
+                    <div class="nav-components"><a href="#projects">Explore Site</a></div>
+                    <div class="nav-components"><a href="./member.html">Members</a></div>
+                    <div class="nav-components"><a href="#contactme">Message Us</a></div>
+                    <div class="nav-components"><a href="#" onclick="getLocation()"><img src="{{url_for('static',filename='images/share location.svg')}}"></img></a></div>
                 </div>
             </div>
 
@@ -289,6 +290,21 @@
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="https://kit.fontawesome.com/58a810656e.js"></script>
     <script>
+
+        function getLocation() {
+            const x = document.getElementById("demo");
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+              x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+          
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude + 
+            "<br>Longitude: " + position.coords.longitude;
+        }
+
         function homeNavigator(){
            window.location.href="./home.html"
         }
