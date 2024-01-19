@@ -46,12 +46,12 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         success_message = f"User '{username}' registered successfully!"
-        return render_template('/index.html',success_message=success_message)
-    return render_template('/index.html')
+        return render_template('/signup-in.html',success_message=success_message)
+    return render_template('/signup-in.html')
 
-@app.route("/index.html")
-def indexcaller():
-    return render_template('index.html')
+@app.route("/signup-in.html")
+def signupcaller():
+    return render_template('signup-in.html')
 
 @app.route("/signin",methods=['GET','POST'])
 def signin():
@@ -64,11 +64,11 @@ def signin():
         if user and :
             session['username'] = user.username
             session['password'] = user.password
-            return render_template('/home.html')
+            return render_template('/index.html')
         else:
             failure_message = f"INVALID USERNAME OR PASSWORD!"
-            return render_template('/index.html',failure_message=failure_message)
-    return render_template('/index.html')
+            return render_template('/signup-in.html',failure_message=failure_message)
+    return render_template('/signup-in.html')
 
 # def hello_world():
 #     # return render_template('login.html')
@@ -79,11 +79,11 @@ def signin():
 #     # Release the Capture Object and close the opencv window
 #     cap.release()
 #     cv2.destroyAllWindows()
-#     return render_template('index.html')
+#     return render_template('signup-in.html')
 
-@app.route("/home.html")
+@app.route("/index.html")
 def member1():
-    return render_template('home.html')
+    return render_template('index.html')
 
 @app.route("/member.html")
 def member2():
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 # #     cv2.imwrite('static/image.jpg', frame)  # Save image in the 'static' folder
 # #     cap.release()
 
-# #     return render_template('index.html', image_path='static/image.jpg')
+# #     return render_template('signup-in.html', image_path='static/image.jpg')
 
 
 
