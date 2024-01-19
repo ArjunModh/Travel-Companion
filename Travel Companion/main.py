@@ -57,13 +57,13 @@ def indexcaller():
 def signin():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
+        password = request.form['Password']
         
         user = user_details.query.filter_by(username=username).first()
         
-        if user and user.check_password(password):
-            # session['username'] = user.username
-            # session['password'] = user.password
+        if user and :
+            session['username'] = user.username
+            session['password'] = user.password
             return render_template('/home.html')
         else:
             failure_message = f"INVALID USERNAME OR PASSWORD!"
