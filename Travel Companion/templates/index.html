@@ -32,7 +32,7 @@
             <div class="hero-section">
                 <div class="faded-text">Travel Companion</div>
                 <div class="hero-left">
-                    <div class="hero-heading hero-head" id="usernameDisplay">Hi There !</div>
+                    <div class="hero-heading hero-head" id="usernameDisplay">Hi {{session.username}} !</div>
                     <div class="hero-sub-heading hero-heading">
                         I am a <span class="role"></span>
                     </div>
@@ -111,9 +111,7 @@
                             <img class="project-skill" src="{{url_for('static',filename='images/CSS.png')}}" alt="">
                             <img class="project-skill" src="{{url_for('static',filename='/images/Javascript.svg')}}" alt="">
                             <img class="project-skill" src="{{url_for('static',filename='/images/Express.png')}}"alt="">
-                            <img class="project-skill" src="{{url_for('static',filename='/images/NextJsCircle.png')}}" alt="">
                             <img class="project-skill" src="{{url_for('static',filename='/images/Tailwind.png')}}" alt="">
-                            <img class="project-skill" src="{{url_for('static',filename='/images/NodeJs.svg')}}" alt="">
                             <img class="project-skill" src="{{url_for('static',filename='/images/MongoDB.svg')}}" alt="">
                             <img class="project-skill" src="{{url_for('static',filename='/images/Redux.svg')}}" alt="">
                             <img class="project-skill" src="{{url_for('static',filename='/images/Vercel.svg')}}" alt="">
@@ -243,7 +241,7 @@
         <div class="contactus-form" id="contactme">
             <div class="">
     
-                <h1 class="contactus-heading">Contact me</h1>
+                <h1 class="contactus-heading">Contact Us</h1>
                 <h3 class="contactus-subheading">Questions, Thoughts, Or Just Want To Say Hello?</h3>
                 <div class="contactus-form-container">
                     <form action="https://formsubmit.co/ebf00e25be84071f5a1cafb5043fbf1e" method="POST">
@@ -306,7 +304,7 @@
         }
 
         function homeNavigator(){
-           window.location.href="./home.html"
+           window.location.href="./index.html"
         }
         var typeData = new Typed(".role", {
             strings: [

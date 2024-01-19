@@ -1,18 +1,17 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask import Flask, render_template, request, session, flash, url_for
+from passlib.hash import bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-import cv2
-import numpy as np
-from PIL import Image
-# from threading import Thread 
+from sqlalchemy.exc import IntegrityError
+# import cv2
+# import numpy as np
+# from PIL import Image
 
 app = Flask(__name__)
+ 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/travel_comapnion'
 db = SQLAlchemy(app)
 app.secret_key = 'secret_key'
-bcrypt = Bcrypt(app)
-
-class user_details(db.Model):
+class user_details1(db.Model):
     user_id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column( db.String(50), unique=True, nullable=False)
@@ -21,47 +20,47 @@ class user_details(db.Model):
     def __init__(self,username,email,password):
         self.username = username
         self.email = email
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-
+        self.password = bcrypt.hash(password)
     def check_password(self,password):
         # password = password.encode('utf-8') if isinstance(password, str) else password
-        return bcrypt.check_password_hash(self.password,password)
+        return bcrypt.verify(password, self.password)
     
     with app.app_context():
         db.create_all()
-
 @app.route("/")
 def hello():
     return render_template('landing.html')
-
-    
 @app.route("/signup",methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['Email']
-        password = request.form['password']
+        username = request.form['new-username']
+        email = request.form['new-email']
+        password = request.form['new-password']
         
-        new_user = user_details(username=username,email=email,password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        success_message = f"User '{username}' registered successfully!"
-        return render_template('/signup-in.html',success_message=success_message)
+        new_user = user_details1(username=username,email=email,password=password)
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            success_message = f"User '{username}' registered successfully!"
+            return render_template('/signup-in.html',success_message=success_message)
+        except IntegrityError:
+            # if new_user.query.filter(new_user.username == request.form['new-username']).first():
+            username_taken = f"'{username}' Username Already Taken !!!"
+            return render_template('/signup-in.html',username_taken=username_taken)
     return render_template('/signup-in.html')
-
 @app.route("/signup-in.html")
 def signupcaller():
     return render_template('signup-in.html')
-
 @app.route("/signin",methods=['GET','POST'])
 def signin():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['Password']
+        username = request.form['current-username']
+        password = request.form['current-password']
         
-        user = user_details.query.filter_by(username=username).first()
+        user = user_details1.query.filter_by(username=username).first()
         
-        if user and user.check_password(password) :
+        if user and user.check_password(password):
+            session['loggedin'] = True
             session['username'] = user.username
             session['password'] = user.password
             return render_template('/index.html')
