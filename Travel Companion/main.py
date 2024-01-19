@@ -61,7 +61,7 @@ def signin():
         
         user = user_details.query.filter_by(username=username).first()
         
-        if user and :
+        if user and user.check_password(password) :
             session['username'] = user.username
             session['password'] = user.password
             return render_template('/index.html')
