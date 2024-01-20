@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, flash, url_for
+from flask import Flask, render_template, request, session
 from passlib.hash import bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
@@ -8,10 +8,10 @@ from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
  
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/travel_comapnion'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/travel_companion'
 db = SQLAlchemy(app)
 app.secret_key = 'secret_key'
-class user_details1(db.Model):
+class user_data(db.Model):
     user_id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column( db.String(50), unique=True, nullable=False)
@@ -37,7 +37,7 @@ def signup():
         email = request.form['new-email']
         password = request.form['new-password']
         
-        new_user = user_details1(username=username,email=email,password=password)
+        new_user = user_data(username=username,email=email,password=password)
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -45,7 +45,7 @@ def signup():
             return render_template('/signup-in.html',success_message=success_message)
         except IntegrityError:
             # if new_user.query.filter(new_user.username == request.form['new-username']).first():
-            username_taken = f"'{username}' Username Already Taken !!!"
+            username_taken = f"'{username}' Username/Email Already Taken !!!"
             return render_template('/signup-in.html',username_taken=username_taken)
     return render_template('/signup-in.html')
 @app.route("/signup-in.html")
@@ -57,7 +57,7 @@ def signin():
         username = request.form['current-username']
         password = request.form['current-password']
         
-        user = user_details1.query.filter_by(username=username).first()
+        user = user_data.query.filter_by(username=username).first()
         
         if user and user.check_password(password):
             session['loggedin'] = True
